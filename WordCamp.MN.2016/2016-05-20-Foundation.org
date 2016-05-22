@@ -1,0 +1,332 @@
+#+TITLE: WordCamp MN 2016 Foundation Friday
+
+* Debugging
+
+  https://codex.wordpress.org/Debugging_in_WordPress
+
+
+* WordPress Code Structure Overview
+
+  https://github.com/dannyb195/Article-Ideas
+
+** Never hack core
+
+   Make your changes in ~wp-content/~.
+
+** Hacking a theme
+
+   - create a new theme directory in ~wp-content/themes/~
+
+     #+BEGIN_SRC bash
+       $ mkdir -p wp-content/themes/demo-theme
+       $ cd wp-content/themes/demo-theme
+     #+END_SRC
+
+   - Make an empty style.css with just the theme name
+
+     #+BEGIN_SRC bash
+       echo '/* Theme Name: demo theme */' > style.css
+     #+END_SRC
+
+   - create a basic ~index.php~ file
+
+     #+BEGIN_SRC php
+       <?php
+
+       echo 'this will work';
+     #+END_SRC
+
+   - create an empty ~functions.php~ file
+
+     #+BEGIN_SRC bash
+       $ touch functions.php
+     #+END_SRC
+
+   - Go back to the "Themes" section in the WP dashboard, and you
+     should be able to select your new theme. When you view the site,
+     all you should see is the string echoed from ~index.php~. Wollah!
+
+
+** Typically start with something dervied from "Underscores" https://underscores.me
+
+** Difference between child theme and starter theme:
+   - Use a child theme to make style and function overrides of a parent theme
+   - A starter theme is meant for you to change, will never be updated
+     from source
+
+
+
+*** child themes based on your starter theme?
+
+    An interesting question was raised in the workshop about creating
+    child themes from your starter-based theme for client
+    delivery. The presenter seemed to poo-poo the idea but I think it
+    actually has some merit. Even though you're doing work for a
+    single client (bespoke) it makes sense to keep the parent-child
+    theme on delivery because it will make the job of restructuring
+    much easier down the road, and eliminate some of the effort of
+    updating. Plus, you can reuse the same starter theme on other
+    clients by only changing some of the details for similar
+    functionality.
+
+    This would not especially work well in the case of customer post
+    types and that sort of thing, though.
+
+
+* Beginning Templating / Structure Overview
+
+** Files:
+   - ~header.php~ -- all elements before the content
+   - ~footer.php~ -- all elements after the content
+
+*** splitting the layout
+
+    I'm not altogether fond of the sort of layouts that are split in
+    half. I think I much prefer the sort of layout system that yields
+    the content passed to it. But this works.
+
+** Functions:
+   - ~get_header();~ includes the header.php content
+     https://developer.wordpress.org/reference/functions/get_header/
+
+     #+BEGIN_SRC php
+     get_header('home');
+     #+END_SRC
+
+     Retrieves the file ~header-home.php~.
+
+   - ~get_footer();~ includes the footer.php content
+     https://developer.wordpress.org/reference/functions/get_footer/
+   - ~get_sidebar();~
+   - ~have_posts();~ returns number of posts remaining in the loop,
+     counting down to zero
+     https://developer.wordpress.org/reference/functions/have_posts/
+   - ~the_post();~ iterate the post index in The Loop. Retrieves the
+     next post, sets up the post, sets the 'in the loop' property to
+     true.
+     https://developer.wordpress.org/reference/functions/the_post/
+   - ~the_title();~ writes the title from the post into the page
+     https://developer.wordpress.org/reference/functions/the_title/
+   - ~the_permalink();~
+   - ~the_content();~
+   - ~the_date();~, ~the_time();~ Date and time of post, resp.
+     https://developer.wordpress.org/reference/functions/the_date/
+     https://developer.wordpress.org/reference/functions/the_time/
+
+** The Loop
+
+   https://codex.wordpress.org/The_Loop
+
+   Used to control the display of posts. The central concept in
+   wordpress.
+
+** Getting good test data
+
+   http://wptest.io/
+   A good suite of test data when developing
+
+* Templating continued - required actions / functions / enqueuing
+
+** parts
+   - get_tempate_part( string $slug , string $name );
+     https://developer.wordpress.org/reference/functions/get_template_part/
+
+** actions
+   - ~wp_head();~ -- put this inside the ~header.php~ file, just
+     before the closing ~</head>~ tag.
+     https://codex.wordpress.org/Plugin_API/Action_Reference/wp_head
+   - ~wp_footer();~ -- put this inside the ~footer.php~ file, just
+     before the closing ~</body>~ tag.
+     https://codex.wordpress.org/Plugin_API/Action_Reference/wp_footer
+   - ~wp_enqueue_script();~ -- generally goes in ~functions.php~ but
+     you can use it in included component items as well.
+     https://developer.wordpress.org/reference/functions/wp_enqueue_script/
+   - ~wp_enqueue_style();~ (for style sheets) -- similar to the above.
+     https://developer.wordpress.org/reference/functions/wp_enqueue_style/
+   - ~add_action()~ -- needed to actually enqueue scripts and styles
+     https://developer.wordpress.org/reference/functions/add_action/
+
+** hooks
+   - ~wp_enqueue_scripts~ -- this is the hook name used in
+     ~add_action~. It determines the timing (or sequencing more
+     accurately) of when the scripts/styles should be emitted from the
+     queue.
+
+** putting it together:
+
+   In ~functions.php~:
+
+   #+BEGIN_SRC php
+
+     /**
+      ,* This is the way to get your custom theme's styles onto the page.
+      ,*/
+
+     function demo_theme_name_scripts() {
+         wp_enqueue_style( 'demo-style', get_stylesheet_uri() );
+         // no JS at this point, but if you had some, this is how it would be done
+         //wp_enqueue_script( 'demo-script', get_template_directory_uri() . '/js/example.js', array(), '1.0.0', true );
+     }
+     add_action( 'wp_enqueue_scripts', 'demo_theme_name_scripts' );
+
+   #+END_SRC
+
+* Custom Post Types, Custom Fields
+
+** custom taxonomies
+
+   - Installing custom post taxonomies need to happen at ~init~ hook time.
+   - ~register_post_type();~
+     https://developer.wordpress.org/reference/functions/register_post_type/
+   - ~register_taxonomy();~
+     https://developer.wordpress.org/reference/functions/register_taxonomy/
+
+** NOTE!! Difference between actions and filters
+
+   - Actions do something, but don't return anything.
+   - Filters do something, and return a string.
+   - Example:
+
+     - Action:
+
+       #+BEGIN_SRC php
+       <?php the_title("<h1>", "</h1>"); ?>
+       #+END_SRC
+
+     - Filter:
+
+       #+BEGIN_SRC php
+       <?php echo "<h1>" . get_the_title() . "</h1"; ?>
+       #+END_SRC
+
+     These effectively do the same thing.
+
+     If you tried the following, however, the title would be emitted
+     before the header tags:
+
+     #+BEGIN_SRC php
+     <?php echo "<h1>" . the_title() . "</h1>"; ?>
+     #+END_SRC
+
+     This would work:
+
+     #+BEGIN_SRC php
+     <h1><?php the_title(); ?></h1>
+     #+END_SRC
+
+     And here we have PHP's TMTOWTDI in a nutshell: at least one of
+     the ways you think it's going to work, isn't.
+
+
+** naming for custom post types needs to match
+
+   e.g.: ~archive-employees.php~ for new post type ~employees~.
+
+   The plurality of the new post type needs to match here. If you're
+   new post type is ~employee~, then the archive page needs to be
+   ~archive-employee.php~ as well.
+
+   There is also a ~single-employee.php~ you can add to display a
+   single employee post type.
+
+   https://codex.wordpress.org/Post_Types#Custom_Post_Type_Templates
+
+** generate custom post types and taxonomies
+
+   https://generatewp.com/
+
+   Fill out the form fields identifying your new post type / taxonomy,
+   copy and paste the snippet.
+
+   Generators yay!!
+
+* Intro to WP Query()
+
+** create a new WP_Query object
+   Happens behind the scenes with query_posts() and get_posts().
+   https://codex.wordpress.org/Class_Reference/WP_Query
+
+** modify a query before it runs
+
+   - ~pre_get_posts~ , use to re-order the posts, for example
+
+** Custom Field Plugin
+   https://github.com/WebDevStudios/CMB2
+   http://hasinhayder.github.io/cmb2-metabox-generator/
+
+** Using WP_Query directly
+
+   The example given was in creating the archive page for employees,
+   and creating a set of helper functions to run ~WP_Query~ in a
+   number of situations.
+
+* Advanced Topics / General Help
+
+  No time for this...
+
+* Notes about my own installation / experiments
+
+** Started with a vagrant box running apache2
+
+   Ran into problems getting the ~.htaccess~ file written by Wordpress
+   to work.
+
+   Gave up and switched to nginx. (as you do.)
+
+** Configuring redirect:
+
+   #+BEGIN_SRC conf
+     location /blog/ {
+       try_files $uri $uri/ /blog/index.php?$args ;
+     }
+   #+END_SRC
+
+   p.much just works
+
+** NOTE: when using nginx onna vagrant steek
+
+   Set ~sendfile: off;~ in ~/etc/nginx/nginx.conf~!!
+
+   This is due to the poor and sometimes non-existent signaling of
+   file system change events. The nginx server doesn't get wind of the
+   change, and so sends a cached version. ~sendfile: off~ turns off
+   the caching.
+
+** wp-cli
+
+   http://wp-cli.org/
+
+   command line tool to work with wordpress.
+
+   useful with wptest to actually import stuff, if things about user
+   and file permissions didn't necessitate another level of
+   indirection.
+
+** thoughts about file ownership
+
+   The default web server runs under the user/group
+   ~www-data:www-data~. It seems to make things a lot easier to change
+   that to run under ~vagrant:vagrant~ so you can run things without
+   constantly dropping into superuser.
+
+   As it's just the vagrant box, it should matter all that much from a
+   security standpoint.
+
+   Public deployments shouldn't do this.
+
+** thoughts about project structure
+
+   I ended up provisioning the wordpress install under
+   ~/var/www/html/blog/~ with modifications to the nginx site
+   configuration.
+
+   For custom theme development:
+   - I made a directory under ~/vagrant~ for themes,
+   - *copied* over the installation default themes from
+     ~wp-content/themes/~,
+   - created a new directory ~/vagrant/wp_themes/demo~ for the new
+     theme hacking,
+   - *symlinked* the demo theme folder back under
+     ~wp-content/themes/demo~
+   - working in ~/vagrant/wp_themes/demo~ lets me keep it under a
+     different Git repo and edit files on the host machine.
