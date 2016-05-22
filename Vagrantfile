@@ -1,6 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# Set these up in the host machine's `/etc/hosts` file:
 BOX_NAME="sandbox.wp.local"
 DEFAULT_IP="192.168.33.35"
 
