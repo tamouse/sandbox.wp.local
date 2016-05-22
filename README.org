@@ -1,0 +1,66 @@
+#+TITLE: A wordpress sandbox for trying stuff out.
+
+* Started with a vagrant box running apache2
+
+   Ran into problems getting the ~.htaccess~ file written by Wordpress
+   to work.
+
+   Gave up and switched to nginx. (as you do.)
+
+* Configuring redirect:
+
+   #+BEGIN_SRC conf
+     location /blog/ {
+       try_files $uri $uri/ /blog/index.php?$args ;
+     }
+   #+END_SRC
+
+   p.much just works
+
+* NOTE: when using nginx onna vagrant steek
+
+   Set ~sendfile: off;~ in ~/etc/nginx/nginx.conf~!!
+
+   This is due to the poor and sometimes non-existent signaling of
+   file system change events. The nginx server doesn't get wind of the
+   change, and so sends a cached version. ~sendfile: off~ turns off
+   the caching.
+
+* wp-cli
+
+   http://wp-cli.org/
+
+   command line tool to work with wordpress.
+
+   useful with wptest to actually import stuff, if things about user
+   and file permissions didn't necessitate another level of
+   indirection.
+
+* thoughts about file ownership
+
+   The default web server runs under the user/group
+   ~www-data:www-data~. It seems to make things a lot easier to change
+   that to run under ~vagrant:vagrant~ so you can run things without
+   constantly dropping into superuser.
+
+   As it's just the vagrant box, it should matter all that much from a
+   security standpoint.
+
+   Public deployments shouldn't do this.
+
+* thoughts about project structure
+
+   I ended up provisioning the wordpress install under
+   ~/var/www/html/blog/~ with modifications to the nginx site
+   configuration.
+
+   For custom theme development:
+   - I made a directory under ~/vagrant~ for themes,
+   - *copied* over the installation default themes from
+     ~wp-content/themes/~,
+   - created a new directory ~/vagrant/wp_themes/demo~ for the new
+     theme hacking,
+   - *symlinked* the demo theme folder back under
+     ~wp-content/themes/demo~
+   - working in ~/vagrant/wp_themes/demo~ lets me keep it under a
+     different Git repo and edit files on the host machine.
