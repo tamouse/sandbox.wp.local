@@ -1,4 +1,6 @@
 #+TITLE: A wordpress sandbox for trying stuff out.
+#+STARTUP: showall
+
 
 * Started with a vagrant box running apache2
 
@@ -64,3 +66,9 @@
      ~wp-content/themes/demo~
    - working in ~/vagrant/wp_themes/demo~ lets me keep it under a
      different Git repo and edit files on the host machine.
+
+
+
+* should do most of the set up with ansible
+
+  can set up everything per normal on an ubuntu/trusty64 box
