@@ -1,13 +1,15 @@
 #+TITLE: A wordpress sandbox for trying stuff out.
 
-* Started with a vagrant box running apache2
+* Shell provisioning
+
+** Started with a vagrant box running apache2
 
    Ran into problems getting the ~.htaccess~ file written by Wordpress
    to work.
 
    Gave up and switched to nginx. (as you do.)
 
-* Configuring redirect:
+** Configuring redirect:
 
    #+BEGIN_SRC conf
      location /blog/ {
@@ -17,7 +19,7 @@
 
    p.much just works
 
-* NOTE: when using nginx onna vagrant steek
+** NOTE: when using nginx onna vagrant steek
 
    Set ~sendfile: off;~ in ~/etc/nginx/nginx.conf~!!
 
@@ -26,7 +28,7 @@
    change, and so sends a cached version. ~sendfile: off~ turns off
    the caching.
 
-* wp-cli
+** wp-cli
 
    http://wp-cli.org/
 
@@ -36,7 +38,7 @@
    and file permissions didn't necessitate another level of
    indirection.
 
-* thoughts about file ownership
+** thoughts about file ownership
 
    The default web server runs under the user/group
    ~www-data:www-data~. It seems to make things a lot easier to change
@@ -48,7 +50,7 @@
 
    Public deployments shouldn't do this.
 
-* thoughts about project structure
+** thoughts about project structure
 
    I ended up provisioning the wordpress install under
    ~/var/www/html/blog/~ with modifications to the nginx site
@@ -64,3 +66,32 @@
      ~wp-content/themes/demo~
    - working in ~/vagrant/wp_themes/demo~ lets me keep it under a
      different Git repo and edit files on the host machine.
+
+* Ansible Provisioning
+
+** Roles
+
+*** external
+
+    - nsops.nodejs
+    - calebwoods.brightbox_ruby
+
+    - geerlingguy.apache
+    - geerlingguy.mysql
+    - geerlingguy.php
+    - darthwade.wordpress
+    - darthwade.wordpress-apache
+
+
+    #+BEGIN_SRC shell-script
+      ansible-galaxy install -r requirements.yml --force
+    #+END_SRC
+
+**** loading external roles isn't working
+
+     #+BEGIN_SRC shell-script
+        [WARNING]: - nsops.nodejs was NOT installed successfully: The API server (https://galaxy.ansible.com/api/) is not
+       responding, please try again later
+
+       ERROR! - you can use --ignore-errors to skip failed roles and finish processing the list.
+     #+END_SRC

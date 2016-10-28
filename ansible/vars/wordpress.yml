@@ -1,0 +1,17 @@
+# Sandbox WordPress installation variables
+---
+wp_version: 4.0
+wp_install_dir: '/var/www/sandbox_wp'
+wp_db_name: 'sandbox_wp'
+wp_db_user: 'vagrant'
+wp_db_password: 'vagrant'
+wp_db_host: 'localhost'
+
+wp_apache_hostname: 'sandbox.wp.local'
+wp_apache_alias: 'sandbox'
+wp_apache_admin_email: 'admin@example.com'
+
+wp_db_charset: 'utf8'
+wp_db_collate: ''
+wp_table_prefix: 'wp_'
+wp_debug: false

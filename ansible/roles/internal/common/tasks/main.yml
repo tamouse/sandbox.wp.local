@@ -1,0 +1,3 @@
+# common actions on all hosts
+---
+- include: install.yml

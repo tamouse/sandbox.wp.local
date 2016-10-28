@@ -1,0 +1,14 @@
+# Provisioning the WordPress Sandbox Vagrant system for local WordPress Development
+---
+
+---
+- hosts: all
+  roles:
+    - internal/common
+    - external/calebwoods.brightbox_ruby
+    - external/nsops.nodejs
+    - external/geerlingguy.apache
+    - external/geerlingguy.mysql
+    - external/geerlingguy.php
+    - external/darthwade.wordpress
+    - external/darthwade.wordpress-apache

@@ -12,44 +12,31 @@ def my_ip
 rescue
   @my_ip ||= DEFAULT_IP
 end
-
-SCRIPT = <<-PROVISION
-export DEBIAN_FRONTEND=noninteractive
-apt-get update -qq
-apt-get install -y \
-  build-essential \
-  debconf-utils \
-  git git-core \
-  curl \
-  emacs24 \
-  nginx fcgiwrap \
-  php5 php5-cgi php5-cli php5-curl php5-dev php5-fpm \
-  mysql-server mysql-client \
-  php5-mysql
-
-git config --global user.name "tamouse"
-git config --global user.email "tamouse@gmail.com"
-
-echo 'export EDITOR=emacs' >> .profile
-echo 'export VISUAL=emacs' >> .profile
-
-PROVISION
-
 Vagrant.configure(2) do |config|
-  config.vm.box = "ubuntu/trusty64"
-  config.vm.network "private_network", ip: my_ip
-  config.vm.hostname = BOX_NAME
 
-  config.vm.provider "virtualbox" do |vb|
-    # Display the VirtualBox GUI when booting the machine
-    # vb.gui = true
+  config.ssh.forward_agent = true
 
-    # Customize the amount of memory on the VM:
-    vb.customize ["modifyvm", :id, "--memory", "2048"]
-    vb.customize ["modifyvm", :id, "--vram", "12"]
-    vb.customize ["modifyvm", :id, "--cpus", "2"]
-    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  config.vm.define :sandbox_wp do |sb|
+    sb.vm.box      = "ubuntu/trusty64"
+    sb.vm.network  "private_network", ip: my_ip
+    sb.vs.network  "forwarded_port", guest: 80, host: 8088
+    sb.vm.hostname = BOX_NAME
+    # sb.vm.synced_folder '.', '/var/www/sandbox/wp-content/themes/'
+
+    sb.vm.provider "virtualbox" do |vb|
+      # Display the VirtualBox GUI when booting the machine
+      # vb.gui = true
+
+      # Customize the amount of memory on the VM:
+      vb.customize ["modifyvm", :id, "--memory", "2048"]
+      vb.customize ["modifyvm", :id, "--vram", "18"]
+      vb.customize ["modifyvm", :id, "--cpus", "2"]
+      vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    end
   end
 
-  config.vm.provision "shell", inline: SCRIPT
+  config.vm.provision :ansible do |a|
+    a.playbook = 'ansible/sandbox.yml'
+    a.verbose  = 'vvvv'
+  end
 end
