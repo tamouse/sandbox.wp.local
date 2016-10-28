@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - internal/common
+    - external/calebwoods.brightbox_ruby
+    - external/geerlingguy.nodejs
+    - external/geerlingguy.apache
+    - external/geerlingguy.mysql
+    - external/geerlingguy.php
+    - external/darthwade.wordpress
+    - external/darthwade.wordpress-apache
+    - internal/cleanup

@@ -1,0 +1,27 @@
+---
+- name: ppa dependencies
+  apt: name={{item}} update_cache=yes cache_valid_time=300
+  with_items:
+    - python-software-properties
+  become: yes
+
+- name: brightbox ruby repo
+  apt_repository: repo=ppa:brightbox/ruby-ng update_cache=yes
+  become: yes
+
+- name: install ruby packages
+  apt: name={{item}} state=latest
+  with_items:
+    - ruby-switch
+    - "{{brightbox_ruby_version}}"
+    - "{{brightbox_ruby_version}}-dev"
+  become: yes
+
+- name: switch to {{brightbox_ruby_version}}
+  shell: ruby-switch --set {{brightbox_ruby_version}}
+  become: yes
+
+- name: install default gems
+  command: gem install {{item}} --no-document
+  with_items: brightbox_ruby_default_gems
+  become: yes

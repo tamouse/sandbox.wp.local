@@ -1,16 +1,13 @@
 # Installations on all hosts
 ---
 - name: Update APT sources
-  become: yes
   apt: update_cache=yes
 
 - name: Install essential software
-  become: yes
   apt: name={{ item.package }}
   with_items:
-    - package: build_essential
-    - package: ntp
-    - package: git
-    - package: git
-    - package: vim
-    - package: emacs24
+    - {package: build-essential}
+    - {package: ntp}
+    - {package: git}
+    - {package: vim}
+    - {package: emacs24}

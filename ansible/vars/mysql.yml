@@ -1,0 +1,9 @@
+mysql_root_password: root
+mysql_databases:
+  - name: sandbox_wp
+    encoding: utf-8
+mysql_users:
+  - name: sandbox_wp
+    host: "%"
+    password: sandbox_wp
+    priv: "sandbox_wp.*:ALL"

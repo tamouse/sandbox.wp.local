@@ -1,14 +1,58 @@
 # Provisioning the WordPress Sandbox Vagrant system for local WordPress Development
 ---
+- vars:
 
----
-- hosts: all
-  roles:
-    - internal/common
-    - external/calebwoods.brightbox_ruby
-    - external/nsops.nodejs
-    - external/geerlingguy.apache
-    - external/geerlingguy.mysql
-    - external/geerlingguy.php
-    - external/darthwade.wordpress
-    - external/darthwade.wordpress-apache
+    ansible_user: "vagrant"
+    ansible_ssh_user: "vagrant"
+
+    nodejs_version: "6.x"
+    nodejs_install_npm_user: "vagrant"
+
+    ruby_version: 2.3
+    brightbox_ruby_version: "ruby{{ ruby_version }}"
+
+    apache_mods_enabled:
+      - rewrite.load
+
+    mysql_root_password: root
+    mysql_databases:
+      - name: sandbox_wp
+        encoding: utf8
+        collating: utf8_general_ci
+    mysql_users:
+      - name: vagrant
+        host: "%"
+        password: vagrant
+        priv: "sandbox_wp.*:ALL"
+
+    php_memory_limit: "128M"
+    php_max_execution_time: "90"
+    php_upload_max_filesize: "256M"
+    php_enable_apcu: false
+    php_packages:
+      - php5
+      - php5-cli
+      - php5-common
+      - php5-curl
+      - php5-dev
+      - php5-gd
+      - php5-mysql
+
+    wp_version: 4.0
+    wp_install_dir: '/var/www/sandbox_wp'
+    wp_db_name: 'sandbox_wp'
+    wp_db_user: 'vagrant'
+    wp_db_password: 'vagrant'
+    wp_db_host: 'localhost'
+
+    wp_apache_hostname: 'sandbox.wp.local'
+    wp_apache_alias: 'sandbox'
+    wp_apache_admin_email: 'admin@example.com'
+
+    wp_db_charset: 'utf8'
+    wp_db_collate: ''
+    wp_table_prefix: 'wp_'
+    wp_debug: false
+
+
+  include: sudo_roles.yml

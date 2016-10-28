@@ -1,29 +1,23 @@
 # Sets up requirements for external packages
 ---
 
-- src: nsops.nodejs
+- src: geerlingguy.nodejs
   path: external
 
 - src: geerlingguy.apache
-  version: "1.7.3"
   path: external
 
 - src: geerlingguy.mysql
-  version: "2.4.0"
   path: external
 
 - src: geerlingguy.php
-  version: "3.3.2"
   path: external
 
 - src: darthwade.wordpress
-  version: "1.0"
   path: external
 
 - src: darthwade.wordpress-apache
-  version: "1.0"
   path: external
 
 - src: calebwoods.brightbox_ruby
-  version: "1.0.4"
   path: external

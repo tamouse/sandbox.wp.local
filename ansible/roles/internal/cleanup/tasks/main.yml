@@ -1,0 +1,17 @@
+# Some things still require cleanup
+---
+- name: Apache2 | enable vhost_alias module
+  apache2_module: state=present name=vhost_alias
+
+- block:
+    - command: a2dissite {{ item }}
+      with_items:
+        - 000-default
+        - vhosts
+    - service: name=apache2 state=restarted
+
+- name: WordPress | Set correct permissions on WordPress sandbox themes
+  file: path={{wp_install_dir}}/wp-content/{{ item }} owner=www-data group=www-data state=directory recurse=yes
+  with_items:
+    - themes
+    - plugins

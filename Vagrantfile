@@ -19,7 +19,7 @@ Vagrant.configure(2) do |config|
   config.vm.define :sandbox_wp do |sb|
     sb.vm.box      = "ubuntu/trusty64"
     sb.vm.network  "private_network", ip: my_ip
-    sb.vs.network  "forwarded_port", guest: 80, host: 8088
+    sb.vm.network  "forwarded_port", guest: 80, host: 8088
     sb.vm.hostname = BOX_NAME
     # sb.vm.synced_folder '.', '/var/www/sandbox/wp-content/themes/'
 

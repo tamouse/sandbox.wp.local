@@ -95,3 +95,8 @@
 
        ERROR! - you can use --ignore-errors to skip failed roles and finish processing the list.
      #+END_SRC
+
+**** switching to ansible 1.9 version
+
+     See [[http://stackoverflow.com/questions/3987683/homebrew-install-specific-version-of-formula#4158763][installation - Homebrew install specific version of formula -
+     Stack Overflow]] for info on how to do that.
