@@ -2,3 +2,4 @@
 .idea/
 wp_themes/demo/
 downloads/
+ansible/roles/external/
