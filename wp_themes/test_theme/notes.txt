@@ -1,0 +1,12 @@
+#+TITLE: Notes about building a WP theme
+#+STARTUP: showall
+
+* Links scanned
+
+  - [[http://eng.localytics.com/faster-sass-builds-with-webpack/][Faster SASS builds with Webpack  Localytics Engineering Blog]]
+  - [[https://themeshaper.com/tag/webpack/][Webpack  ThemeShaper]]
+  - [[https://codex.wordpress.org/File_Header#Theme][File Header  WordPress Codex]]
+  - [[https://codex.wordpress.org/Theme_Development#Screenshot][Theme Development  WordPress Codex]] <- Screenshots
+  - [[https://gist.github.com/dimroc/3f1d722c61a144aa7034][webpack configured with stylus, sass, and bootstrap]]
+  - [[https://github.com/webpack/extract-text-webpack-plugin][webpackextract-text-webpack-plugin Extract text from bundle into a file.]]
+  - [[https://www.npmjs.com/package/extract-text-webpack-plugin][extract-text-webpack-plugin]] (npmjs)

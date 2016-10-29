@@ -20,6 +20,7 @@ Vagrant.configure(2) do |config|
     sb.vm.box      = "ubuntu/trusty64"
     sb.vm.network  "private_network", ip: my_ip
     sb.vm.network  "forwarded_port", guest: 80, host: 8088
+    sb.vm.network  "forwarded_port", guest: 21, host: 10021 # for FTP
     sb.vm.hostname = BOX_NAME
     # sb.vm.synced_folder '.', '/var/www/sandbox/wp-content/themes/'
 

@@ -1,6 +1,0 @@
----
-apache_vhosts:
-  - servername: 'sandbox.wp.local'
-    document_root: '/var/www/html'
-apache_mods_enabled:
-  - rewrite.load

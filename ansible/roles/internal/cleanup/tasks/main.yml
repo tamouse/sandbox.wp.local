@@ -10,8 +10,8 @@
         - vhosts
     - service: name=apache2 state=restarted
 
-- name: WordPress | Set correct permissions on WordPress sandbox themes
-  file: path={{wp_install_dir}}/wp-content/{{ item }} owner=www-data group=www-data state=directory recurse=yes
-  with_items:
-    - themes
-    - plugins
+- name: WordPress | reset ownership on WordPress installation
+  file: path={{wp_install_dir}} owner=www-data group=www-data state=directory recurse=yes
+
+- name: WordPress | Set FS_METHOD to direct
+  lineinfile: dest={{ wp_install_dir }}/wp-config.php owner=www-data group=www-data state=present line='define("FS_METHOD","direct");'

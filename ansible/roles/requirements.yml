@@ -2,22 +2,22 @@
 ---
 
 - src: geerlingguy.nodejs
-  path: external
+  name: external/geerlingguy.nodejs
 
 - src: geerlingguy.apache
-  path: external
+  name: external/geerlingguy.apache
 
 - src: geerlingguy.mysql
-  path: external
+  name: external/geerlingguy.mysql
 
 - src: geerlingguy.php
-  path: external
+  name: external/geerlingguy.php
 
 - src: darthwade.wordpress
-  path: external
+  name: external/darthwade.wordpress
 
 - src: darthwade.wordpress-apache
-  path: external
+  name: external/darthwade.wordpress-apache
 
 - src: calebwoods.brightbox_ruby
-  path: external
+  name: external/calebwoods.brightbox_ruby

@@ -1,4 +1,6 @@
 #+TITLE: A wordpress sandbox for trying stuff out.
+#+STARTUP: showall
+
 
 * Shell provisioning
 
@@ -100,3 +102,40 @@
 
      See [[http://stackoverflow.com/questions/3987683/homebrew-install-specific-version-of-formula#4158763][installation - Homebrew install specific version of formula -
      Stack Overflow]] for info on how to do that.
+
+* Configuring for FTP updates from WordPress
+
+  DON'T! See the Direct method below!!
+
+  This is a tricky thing. It would be super nice to have easy access
+  to update WordPress on the box, install themes and plugins, and so
+  on, like you'd do on an external server. How exactly to do that on a
+  Vagrant box locally?
+
+
+** Install an FTP server
+
+   I added vsftpd to the ansible provisioning, setting up a user to be
+   the ftp user for the box. That's the easy part.
+
+** Connect the FTP server to the Host machine
+
+   This isn't so bad, just have to map a port from one to the other on
+   the local box. THis is done in the Vagrant file.
+
+   FTP operates at port 21 unsecured, but we usually want to run a
+   secure connection. For starters, though, unsecured might be good
+   enough.
+
+
+   - [ ] remember to add the vsftp role to the playbook
+   - [ ] remember to reload after setting the forwarded port.
+
+** Optional Direct method
+
+   Link: [[http://www.hongkiat.com/blog/update-wordpress-without-ftp/][How to Update WordPress Automatically Without Using FTP
+   Quicktip - Hongkiat]]
+
+   Link: [[https://codex.wordpress.org/Editing_wp-config.php#WordPress_Upgrade_Constants][Editing wp-config.php - WordPress Codex - WordPress Upgrade Constants]]
+
+   *GOLD STAR!!* this is the best method, forget the FTP stuff.
