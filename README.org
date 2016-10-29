@@ -2,7 +2,7 @@
 #+STARTUP: showall
 
 
-* Shell provisioning
+* Shell provisioning (abandoned)
 
 ** Started with a vagrant box running apache2
 
@@ -69,24 +69,24 @@
    - working in ~/vagrant/wp_themes/demo~ lets me keep it under a
      different Git repo and edit files on the host machine.
 
-* Ansible Provisioning
+* Ansible Provisioning (Current)
 
 ** Roles
 
-*** external
+*** external roles defined in `ansible/roles/requirements.yml`
 
-    - nsops.nodejs
-    - calebwoods.brightbox_ruby
-
+    - geerlingguy.nodejs
     - geerlingguy.apache
     - geerlingguy.mysql
     - geerlingguy.php
     - darthwade.wordpress
     - darthwade.wordpress-apache
+    - calebwoods.brightbox_ruby
 
+**** Install the external roles
 
     #+BEGIN_SRC shell-script
-      ansible-galaxy install -r requirements.yml --force
+      ansible-galaxy install -r ansible/roles/requirements.yml --force --ignore-errors
     #+END_SRC
 
 **** loading external roles isn't working
@@ -103,6 +103,10 @@
      See [[http://stackoverflow.com/questions/3987683/homebrew-install-specific-version-of-formula#4158763][installation - Homebrew install specific version of formula -
      Stack Overflow]] for info on how to do that.
 
+**** still having errors with this, switching to 2.0 version
+
+     Working so far
+
 * Configuring for FTP updates from WordPress
 
   DON'T! See the Direct method below!!
@@ -111,7 +115,6 @@
   to update WordPress on the box, install themes and plugins, and so
   on, like you'd do on an external server. How exactly to do that on a
   Vagrant box locally?
-
 
 ** Install an FTP server
 
@@ -131,11 +134,17 @@
    - [ ] remember to add the vsftp role to the playbook
    - [ ] remember to reload after setting the forwarded port.
 
-** Optional Direct method
+* Direct method for updates
 
-   Link: [[http://www.hongkiat.com/blog/update-wordpress-without-ftp/][How to Update WordPress Automatically Without Using FTP
-   Quicktip - Hongkiat]]
+  It turns out, this is the easiest and quickest way to make updates
+  happen in the sandbox. While I'm entirely unclear about the security
+  issues and so will not recommend this for external sites, for a
+  Vagrant box, it's pretty sweet, avoiding all the networking magic,
+  ports, and all that jazz.
 
-   Link: [[https://codex.wordpress.org/Editing_wp-config.php#WordPress_Upgrade_Constants][Editing wp-config.php - WordPress Codex - WordPress Upgrade Constants]]
+  Link: [[http://www.hongkiat.com/blog/update-wordpress-without-ftp/][How to Update WordPress Automatically Without Using FTP
+  Quicktip - Hongkiat]]
 
-   *GOLD STAR!!* this is the best method, forget the FTP stuff.
+  Link: [[https://codex.wordpress.org/Editing_wp-config.php#WordPress_Upgrade_Constants][Editing wp-config.php - WordPress Codex - WordPress Upgrade Constants]]
+
+  *GOLD STAR!!* this is the best method, forget the FTP stuff.
