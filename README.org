@@ -30,16 +30,6 @@
    change, and so sends a cached version. ~sendfile: off~ turns off
    the caching.
 
-** wp-cli
-
-   http://wp-cli.org/
-
-   command line tool to work with wordpress.
-
-   useful with wptest to actually import stuff, if things about user
-   and file permissions didn't necessitate another level of
-   indirection.
-
 ** thoughts about file ownership
 
    The default web server runs under the user/group
@@ -73,7 +63,7 @@
 
 ** Roles
 
-*** external roles defined in `ansible/roles/requirements.yml`
+*** external roles defined in ~ansible/roles/requirements.yml~
 
     - geerlingguy.nodejs
     - geerlingguy.apache
@@ -107,7 +97,9 @@
 
      Working so far
 
-* Configuring for FTP updates from WordPress
+
+
+* Configuring for FTP updates from WordPress (ABANDONED)
 
   DON'T! See the Direct method below!!
 
@@ -134,6 +126,7 @@
    - [ ] remember to add the vsftp role to the playbook
    - [ ] remember to reload after setting the forwarded port.
 
+
 * Direct method for updates
 
   It turns out, this is the easiest and quickest way to make updates
@@ -148,9 +141,11 @@
   Link: [[https://codex.wordpress.org/Editing_wp-config.php#WordPress_Upgrade_Constants][Editing wp-config.php - WordPress Codex - WordPress Upgrade Constants]]
 
   *GOLD STAR!!* this is the best method, forget the FTP stuff.
+
+
 * Working on your themes and plugins
 
-  The `dev/` folder is the place to work on them. Then, it's only a
+  The ~dev/~ folder is the place to work on them. Then, it's only a
   matter of telling the sandbox wordpress installation
   about your theme:
 
@@ -163,3 +158,13 @@
 
   You must keep your themes and plugins in their own git repository;
   the ~dev/~ folder's contents are ignored in the sandbox repository.
+
+* wp-cli
+
+   http://wp-cli.org/
+
+   command line tool to work with wordpress.
+
+   useful with wptest to actually import stuff, if things about user
+   and file permissions didn't necessitate another level of
+   indirection.
