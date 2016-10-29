@@ -148,3 +148,18 @@
   Link: [[https://codex.wordpress.org/Editing_wp-config.php#WordPress_Upgrade_Constants][Editing wp-config.php - WordPress Codex - WordPress Upgrade Constants]]
 
   *GOLD STAR!!* this is the best method, forget the FTP stuff.
+* Working on your themes and plugins
+
+  The `dev/` folder is the place to work on them. Then, it's only a
+  matter of telling the sandbox wordpress installation
+  about your theme:
+
+  #+BEGIN_SRC shell-script
+    vagrant ssh -c 'sudo ln -s /vagrant/dev/themes/my_hot_theme /var/www/sandbox_wp/wp-content/themes/'
+  #+END_SRC
+
+  *NOTE* that the first folder does /not/ end with a foreward slash
+  (~/~), but the second folder /does/.
+
+  You must keep your themes and plugins in their own git repository;
+  the ~dev/~ folder's contents are ignored in the sandbox repository.
