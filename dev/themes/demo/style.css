@@ -1,0 +1,25 @@
+
+/* to accommodate both the wordpress admin bar and the bootstrap navbar */
+body { margin: 70px 0 80px 0; }
+body.logged-in .navbar-fixed-top { top: 32px; }
+
+.navbar-inverse { background-image: linear-gradient(to bottom, indigo, darkblue)}
+
+.footer-fixed-bottom {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 60px;
+    padding: 20px;
+    background-color: aliceblue;
+    border-top: 1px solid darkblue;
+}
+
+/* cannot use bg-danger on a jumbotron as it overrides the background. */
+.jumbotron-danger {
+    background-color: lightpink;
+    border: 1px solid darkred;
+    box-shadow: 2px 2px;
+}

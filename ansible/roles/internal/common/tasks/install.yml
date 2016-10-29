@@ -4,10 +4,15 @@
   apt: update_cache=yes
 
 - name: Install essential software
-  apt: name={{ item.package }}
+  apt: name={{ item }}
   with_items:
-    - {package: build-essential}
-    - {package: ntp}
-    - {package: git}
-    - {package: vim}
-    - {package: emacs24}
+    - build-essential
+    - ntp
+    - git
+    - vim
+    - emacs24
+    - unzip
+    - imagemagick
+    - libmagick-dev
+    - libxml2
+    - libxml2-dev

@@ -1,5 +1,5 @@
 .vagrant/
 .idea/
-wp_themes/demo/
-downloads/
 ansible/roles/external/
+wordpress/
+tmp/
